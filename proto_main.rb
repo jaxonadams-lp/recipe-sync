@@ -56,7 +56,7 @@ response = Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == "https") d
     http.request(request)
 end
 
-if response.code == '200'
+if response.code == "200"
     data = JSON.parse(response.body)
     original_code_json = JSON.parse(data["code"]) # we'll use an updated version of this later
 else
@@ -98,7 +98,7 @@ response = Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == "https") d
     http.request(request)
 end
 
-if response.code == '200'
+if response.code == "200"
     puts "Update was successful"
 else
     puts "Error: #{response.code} - #{response.message}"
