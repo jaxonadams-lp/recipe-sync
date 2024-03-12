@@ -8,7 +8,10 @@ module RecipeSync
         ui = UserInterface.new
         ui.display_title
 
-        ui.prompt_options ["Option A", "Option B", "Option C"]
+        selection = ui.prompt_options [
+            "Deploy a Python script.",
+        ]
+        puts "You chose to do the following: #{selection}"
     end
 end
 

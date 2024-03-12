@@ -48,6 +48,14 @@ class UserInterface
         puts @title
     end
 
+    def exit_ui
+        # handles exiting the app
+        # additional logic may be added later
+
+        puts "Goodbye!"
+        exit
+    end
+
     def collect_input(prompt)
         # provides a way of collecting user input through a nicer display.
 
@@ -65,12 +73,16 @@ class UserInterface
         menu.print_menu
 
         selection = collect_input("  >> ")
-        puts "You selected option #{selection}"
 
-        if menu.selection_is_valid?(selection)
-            puts "Your selection was a valid option."
-        else
-            puts "Your selection was invalid."
+        while !menu.selection_is_valid?(selection)
+            puts "Please enter a valid option. You should enter a number; for example, \"2\" (without quotes)."
+            selection = collect_input("  >> ")
         end
+
+        if selection.to_i == 0
+            exit_ui
+        end
+
+        return options[selection.to_i - 1]
     end
 end
