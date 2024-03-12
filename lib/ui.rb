@@ -2,6 +2,8 @@
 #   the user to interact with this application through the CLI. Also
 #   contains related classes needed to support the user interface.
 
+require "colorize"
+
 class Menu
     def initialize(message, options)
         @message = message
@@ -11,13 +13,13 @@ class Menu
     def print_menu
         # print the available options to the screen, including an option
         #  to exit. The exit option will always be option 0.
-        puts @message
+        puts @message.yellow
         puts "\n"
 
         @options.length.times do |i|
-            puts "[#{i + 1}] #{@options[i]}"
+            puts "[#{i + 1}] #{@options[i]}".yellow
         end
-        puts "[0] Exit"
+        puts "[0] Exit".red
     end
 
     def selection_is_valid?(selection)
@@ -45,7 +47,7 @@ class UserInterface
     def display_title
         # prints some ascii art (defined in initialize) to the screen.
 
-        puts @title
+        puts @title.red
     end
 
     def exit_ui
