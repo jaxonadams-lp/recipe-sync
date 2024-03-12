@@ -2,6 +2,8 @@
 #   the user to interact with this application through the CLI. Also
 #   contains related classes needed to support the user interface.
 
+require "io/console"
+
 require "colorize"
 
 class Menu
@@ -17,9 +19,9 @@ class Menu
         puts "\n"
 
         @options.length.times do |i|
-            puts "[#{i + 1}] #{@options[i]}".yellow
+            puts "  [#{i + 1}] #{@options[i]}".yellow
         end
-        puts "[0] Exit".red
+        puts "  [0] Exit".red
     end
 
     def selection_is_valid?(selection)
@@ -74,11 +76,11 @@ class UserInterface
         menu = Menu.new("Pick an option.", options)
         menu.print_menu
 
-        selection = collect_input("  >> ")
+        selection = collect_input(">> ")
 
         while !menu.selection_is_valid?(selection)
-            puts "Please enter a valid option. You should enter a number; for example, \"2\" (without quotes)."
-            selection = collect_input("  >> ")
+            puts "Please enter a valid option. You should enter a number; for example, \"2\" (without quotes).".red
+            selection = collect_input(">> ")
         end
 
         if selection.to_i == 0
@@ -86,5 +88,36 @@ class UserInterface
         end
 
         return options[selection.to_i - 1]
+    end
+
+    def prompt(message)
+        # prompt the user for input using the given message
+
+        puts "\n"
+        puts message.yellow
+        user_input = collect_input(">> ")
+        puts "\n"
+
+        return user_input
+    end
+
+    def prompt_sensitive(message)
+        puts "\n"
+
+        puts message.yellow
+        puts "\n"
+        print ">> "
+
+        input = ""
+        loop do
+            char = STDIN.getch
+            break if char == "\r" || char == "\n"  # enter key pressed
+            print "*"
+        input << char
+        end
+
+        puts "\n"
+        puts "\n"
+        return input
     end
 end
