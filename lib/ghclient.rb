@@ -7,6 +7,7 @@ require "octokit"
 class GitHubClient
     def initialize(ui)
         @ui = ui
+        @client = nil
     end
 
     def init
@@ -14,6 +15,7 @@ class GitHubClient
         prompt = "Please enter your GitHub Personal Access Token."
         access_token = @ui.prompt_sensitive(prompt)
 
-        puts access_token
+        @client = Octokit::Client.new(access_token: access_token)
+        puts "Connected to GitHub successfully."
     end
 end

@@ -3,11 +3,15 @@
 
 require_relative "lib/ui.rb"
 require_relative "lib/ghclient.rb"
+require_relative "config/config.rb"
 
 module RecipeSync
     def self.deploy_python(ui)
-        gh_client = GitHubClient.new(ui)
-        gh_client.init
+        # gh_client = GitHubClient.new(ui)
+        # gh_client.init
+
+        settings = Configuration.new(ui, "./config/config.yaml")
+        puts settings.config
     end
 
     def self.main
