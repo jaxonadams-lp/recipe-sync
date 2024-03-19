@@ -3,6 +3,7 @@
 
 require_relative "lib/ui.rb"
 require_relative "lib/ghclient.rb"
+require_relative "lib/wkclient.rb"
 require_relative "config/config.rb"
 
 module RecipeSync
@@ -12,17 +13,20 @@ module RecipeSync
         access_token = settings.config["github"]["personal_access_token"]
         gh_client = GitHubClient.new(ui, access_token)
 
+        workato_key = settings.config["workato"]["api_key"]
+        wk_client = WorkatoClient.new(ui, workato_key)
+
         owner = ui.prompt("Please enter the owner of your repository.")
         name = ui.prompt("Please enter the repository name.")
         path = ui.prompt("What file should I read? Please enter a relative path.")
 
         code = gh_client.read_remote("#{owner}/#{name}", path)
 
-        # TODO: remove me
-        puts "Here is your code!\n\n"
-        puts code
-        puts "\n"
-        # TODO: remove me
+        # sample recipe id: 45459373 (dev workspace)
+        recipe_id = ui.prompt("Please enter the ID of the recipe you'd like to update.")
+        step = ui.prompt("Please enter the step number for your Python step.")
+
+        update_status = wk_client.update_code_step(recipe_id, step, code)
     end
 
     def self.main
