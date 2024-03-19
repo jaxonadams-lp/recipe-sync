@@ -5,17 +5,25 @@
 require "octokit"
 
 class GitHubClient
-    def initialize(ui)
+    def initialize(ui, access_token)
         @ui = ui
-        @client = nil
+        @client = Octokit::Client.new(access_token: access_token)
     end
 
-    def init
-        # create and store a connection to GitHub.
-        prompt = "Please enter your GitHub Personal Access Token."
-        access_token = @ui.prompt_sensitive(prompt)
+    def read_remote(repo, fpath)
+        # read a remote file from the given repository
 
-        @client = Octokit::Client.new(access_token: access_token)
-        puts "Connected to GitHub successfully."
+        begin
+            file_content = @client.contents(repo, path: fpath)
+            script = Base64.decode64(file_content.content)
+        rescue Octokit::NotFound
+            puts "File '#{path}' not found in the repository '#{owner}/#{name}'."
+            exit
+        rescue Octokit::Error => e
+            puts "Octokit error: #{e.message}"
+            exit
+        end
+
+        script
     end
 end
