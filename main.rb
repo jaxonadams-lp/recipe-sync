@@ -56,6 +56,12 @@ class RecipeSync
     end
 
     def deploy_python_many
+        @ui.puts_info "This step reads from a CSV file in the ./assets directory."
+        @ui.puts_info "Please ensure you have a CSV ready in the following format:"
+        @ui.puts_info "\nrecipe_id,step_num"
+        @ui.puts_info "42,2"
+        @ui.puts_info "(...etc)\n"
+
         # deploy a python script to many recipes in Workato
         owner = @ui.prompt("Please enter the owner of your repository.")
         name = @ui.prompt("Please enter the repository name.")
@@ -63,8 +69,16 @@ class RecipeSync
 
         code = @gh_client.read_remote("#{owner}/#{name}", path)
 
-        @file_reader.select_file_for "deploying a script to many recipes"
+        @file_reader.select_file_for "recipe deployment info"
         contents = @file_reader.read_csv
+
+        if !(contents["columns"].include? "recipe_id") || !(contents["columns"].include? "step_num")
+            @ui.puts_error "Fields \"recipe_id\" and \"step_num\" are required."
+        end
+
+        contents["rows"].each do |recipe_id, step_num|
+            puts "ID: #{recipe_id}\tSTEP: #{step_num}"
+        end
     end
 end
 

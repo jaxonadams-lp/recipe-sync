@@ -26,8 +26,14 @@ class FileReader
     def read_csv
         # read the selected file and return its contents
 
+        data = []
         CSV.foreach("#{@dirpath}/#{@selected_file}") do |row|
-            puts row.inspect
+            data << row
         end
+
+        {
+            "columns" => data[0],
+            "rows" => data[1..-1],
+        }
     end
 end

@@ -50,6 +50,11 @@ class UserInterface
         puts message.light_blue
     end
 
+    def puts_error(message)
+        puts message.red
+        exit
+    end
+
     def display_title
         # prints some ascii art (defined in initialize) to the screen.
 
