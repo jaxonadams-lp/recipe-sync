@@ -29,7 +29,7 @@ class WorkatoClient
 
     def get_recipe_data(recipe_id)
         # get the recipe's configuration data from Workato
-        
+
         url = URI("#{@base_url}/recipes/#{recipe_id}")
 
         request = Net::HTTP::Get.new(url)

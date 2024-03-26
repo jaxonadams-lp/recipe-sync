@@ -4,6 +4,7 @@
 require_relative "lib/ui.rb"
 require_relative "lib/ghclient.rb"
 require_relative "lib/wkclient.rb"
+require_relative "lib/reader.rb"
 require_relative "config/config.rb"
 
 class RecipeSync
@@ -16,6 +17,8 @@ class RecipeSync
 
         wk_key = @settings.config["workato"]["api_key"]
         @wk_client = WorkatoClient.new(@ui, wk_key)
+
+        @file_reader = FileReader.new(@ui)
     end
 
     def main
@@ -23,24 +26,25 @@ class RecipeSync
 
         # menu of options -- each is a callable function
         option_map = {
-            "Deploy a Python script." => method(:deploy_python),
+            "Deploy a Python script to a single recipe." => method(:deploy_python),
+            "Deploy a Python script to many recipes." => method(:deploy_python_many),
         }
 
         # prompt user for what they'd like to do
-        selection = @ui.prompt_options(option_map.keys)
+        selection = @ui.prompt_options("What would you like to do?", option_map.keys)
 
-        # if not nil, call the function; else exit the program
+        # if not nil, call the method; else exit the program
         option_map[selection] ? option_map[selection].() : exit
     end
 
     private
 
     def deploy_python
-        # deploy a python script to one or many recipes in Workato
+        # deploy a python script to one recipe in Workato
 
         owner = @ui.prompt("Please enter the owner of your repository.")
         name = @ui.prompt("Please enter the repository name.")
-        path = @ui.prompt("What file should I read? Please enter a relative path.")
+        path = @ui.prompt("What remote file should I read? Please enter a relative path.")
 
         code = @gh_client.read_remote("#{owner}/#{name}", path)
 
@@ -49,6 +53,18 @@ class RecipeSync
         step = @ui.prompt("Please enter the step number for your Python step.")
 
         update_status = @wk_client.update_code_step(recipe_id, step, code)
+    end
+
+    def deploy_python_many
+        # deploy a python script to many recipes in Workato
+        owner = @ui.prompt("Please enter the owner of your repository.")
+        name = @ui.prompt("Please enter the repository name.")
+        path = @ui.prompt("What remote file should I read? Please enter a relative path.")
+
+        code = @gh_client.read_remote("#{owner}/#{name}", path)
+
+        @file_reader.select_file_for "deploying a script to many recipes"
+        contents = @file_reader.read_csv
     end
 end
 

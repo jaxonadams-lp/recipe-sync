@@ -28,6 +28,8 @@ class Configuration
     }
 
     def prompt_for_config
+        @ui.puts_info "\nConfiguring RecipeSync...\n"
+
         new_config = {}
 
         CONFIG_FIELDS.each_pair do |domain, settings|
@@ -51,13 +53,13 @@ class Configuration
         File.open(@config_file, "w") do |file|
             file.write(config_hash.to_yaml)
         end
-        puts "New configuration file created at #{@config_file}."
+        @ui.puts_info "New configuration file created at #{@config_file}."
     end
 
     def load_config(config_file)
         if File.exist?(config_file)
             config = YAML.load_file(config_file)
-            puts "Configuration loaded from #{config_file}"
+            @ui.puts_info "Configuration loaded from #{config_file}"
             config
         else
             new_config = prompt_for_config

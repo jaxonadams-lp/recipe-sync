@@ -40,10 +40,14 @@ class UserInterface
     def initialize
         @title = "
          ______ _______ _______ _____  _____  _______     _______ __   __ __   _ _______
-        |_____/ |______ |         |   |_____] |______ ___ |______   \\_/   | \\  | |      
+        |_____/ |______ |         |   |_____] |______ ___ |______   \\_/   | \\  | |
         |    \\_ |______ |_____  __|__ |       |______     ______|    |    |  \\_| |______
-                                                                                        
+
        "
+    end
+
+    def puts_info(message)
+        puts message.light_blue
     end
 
     def display_title
@@ -56,7 +60,7 @@ class UserInterface
         # handles exiting the app
         # additional logic may be added later
 
-        puts "Goodbye!"
+        puts_info "Goodbye!"
         exit
     end
 
@@ -70,10 +74,10 @@ class UserInterface
         return user_input.chomp
     end
 
-    def prompt_options(options)
+    def prompt_options(msg, options)
         # given a list of options, display a menu and prompt for an option
 
-        menu = Menu.new("Pick an option.", options)
+        menu = Menu.new(msg, options)
         menu.print_menu
 
         selection = collect_input(">> ")

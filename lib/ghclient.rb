@@ -17,7 +17,7 @@ class GitHubClient
             file_content = @client.contents(repo, path: fpath)
             script = Base64.decode64(file_content.content)
         rescue Octokit::NotFound
-            puts "File '#{path}' not found in the repository '#{owner}/#{name}'."
+            puts "File '#{fpath}' not found in the repository '#{repo}'."
             exit
         rescue Octokit::Error => e
             puts "Octokit error: #{e.message}"
