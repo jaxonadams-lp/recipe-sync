@@ -35,6 +35,8 @@ class RecipeSync
 
         # if not nil, call the method; else exit the program
         option_map[selection] ? option_map[selection].() : exit
+
+        @ui.puts_info "Done!"
     end
 
     private
@@ -77,7 +79,10 @@ class RecipeSync
         end
 
         contents["rows"].each do |recipe_id, step_num|
-            puts "ID: #{recipe_id}\tSTEP: #{step_num}"
+            # puts "ID: #{recipe_id}\tSTEP: #{step_num}"
+
+            update_status = @wk_client.update_code_step(recipe_id, step_num, code)
+            puts "RECIPE: #{recipe_id}\tSTATUS: #{update_status}"
         end
     end
 end
