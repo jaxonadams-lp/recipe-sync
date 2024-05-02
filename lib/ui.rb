@@ -50,6 +50,10 @@ class UserInterface
         puts message.light_blue
     end
 
+    def puts_success(message)
+        puts message.green
+    end
+
     def puts_error(message)
         puts message.red
         exit

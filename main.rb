@@ -82,7 +82,7 @@ class RecipeSync
             # puts "ID: #{recipe_id}\tSTEP: #{step_num}"
 
             update_status = @wk_client.update_code_step(recipe_id, step_num, code)
-            puts "RECIPE: #{recipe_id}\tSTATUS: #{update_status}"
+            @ui.puts_success "RECIPE: #{recipe_id}\tSTATUS: #{update_status}"
         end
     end
 end
