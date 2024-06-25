@@ -18,6 +18,9 @@ class WorkatoClient
         #   the python code section for the recipe.
 
         recipe_data = get_recipe_data(recipe_id)
+
+        stop_recipe(recipe_id)
+
         new_payload = create_payload_with_new_script(
             recipe_data,
             step_num,
@@ -25,6 +28,8 @@ class WorkatoClient
         )
 
         update_recipe(recipe_id, new_payload)
+
+        start_recipe(recipe_id)
     end
 
     def get_recipe_data(recipe_id)
@@ -53,6 +58,36 @@ class WorkatoClient
             puts response.body
             exit
         end
+    end
+
+    def start_recipe(recipe_id)
+        url = URI("#{@base_url}/recipes/#{recipe_id}/start")
+
+        request = Net::HTTP::Put.new(url)
+        request["Authorization"] = "Bearer #{@api_key}"
+        request.content_type = "application/json"
+
+        response = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
+            http.request(request)
+        end
+        exit_if_bad_status(response)
+
+        response.code
+    end
+
+    def stop_recipe(recipe_id)
+        url = URI("#{@base_url}/recipes/#{recipe_id}/stop")
+
+        request = Net::HTTP::Put.new(url)
+        request["Authorization"] = "Bearer #{@api_key}"
+        request.content_type = "application/json"
+
+        response = Net::HTTP.start(url.host, url.port, use_ssl: true) do |http|
+            http.request(request)
+        end
+        exit_if_bad_status(response)
+
+        response.code
     end
 
     def update_recipe(recipe_id, payload)
