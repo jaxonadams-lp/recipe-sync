@@ -8,6 +8,7 @@ If you are deploying Python code to multiple recipes, you'll need a csv in this 
 ## Usage
 
 **_WITH DOCKER_**
+
 If you've updated your `input.csv` file in the `/assets` directory or this is your first time running RecipeSync, you'll need to build a new Docker image:
 ```bash
 cd path/to/recipe-sync
@@ -25,6 +26,7 @@ docker rmi $(docker images -q)
 ```
 
 **_WITHOUT DOCKER_**
+
 Navigate to the root directory of the project and run it:
 ```bash
 cd path/to/recipe-sync
