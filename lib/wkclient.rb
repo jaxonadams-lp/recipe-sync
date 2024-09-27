@@ -35,7 +35,7 @@ class WorkatoClient
             start_recipe(recipe_id)
         end
 
-        return status_code
+        return [recipe_data["name"], status_code]
     end
 
     def get_recipe_data(recipe_id)
