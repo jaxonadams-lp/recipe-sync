@@ -71,7 +71,8 @@ class RecipeSync
 
         code = @gh_client.read_remote("#{owner}/#{name}", path)
 
-        @file_reader.select_file_for "recipe deployment info"
+        # @file_reader.select_file_for "recipe deployment info"
+        @file_reader.select_file_relative_path
         contents = @file_reader.read_csv
 
         if !(contents["columns"].include? "recipe_id") || !(contents["columns"].include? "step_num")
