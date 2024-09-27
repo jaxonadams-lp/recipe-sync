@@ -19,6 +19,8 @@ class WorkatoClient
 
         recipe_data = get_recipe_data(recipe_id)
 
+        previously_running = recipe_data["running"]
+
         stop_recipe(recipe_id)
 
         new_payload = create_payload_with_new_script(
@@ -27,9 +29,13 @@ class WorkatoClient
             new_code
         )
 
-        update_recipe(recipe_id, new_payload)
+        status_code = update_recipe(recipe_id, new_payload)
 
-        start_recipe(recipe_id)
+        if previously_running
+            start_recipe(recipe_id)
+        end
+
+        return status_code
     end
 
     def get_recipe_data(recipe_id)
