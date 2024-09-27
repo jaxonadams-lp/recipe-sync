@@ -15,7 +15,7 @@ cd path/to/recipe-sync
 docker build -t recipe-sync .
 ```
 
-Build and run a new docker container running RecipeSync with the following command:
+Build and run a new Docker container running RecipeSync with the following command:
 ```bash
 docker run -it --rm recipe-sync
 ```
